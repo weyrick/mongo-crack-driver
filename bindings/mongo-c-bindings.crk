@@ -1,0 +1,26 @@
+
+@import crack.extgen generateExtension;
+
+@generateExtension crack.db._mongoc  {
+    @filename 'mongo-c-bindings.cpp'
+    @inject '#include "mongo.h"\n'
+    @crack_internal
+/*
+    # use "int" as the actual type for PCRE because pcre.h defines those as 
+    # opaque.  Ideally, we would mark this as "final"
+    @cname int class PCRE;
+    PCRE pcre_compile2(byteptr pattern, int options, array[int] errorCode,
+                       array[byteptr] errorText,
+                       array[int] errorOffset,
+                       byteptr tablePtr
+                       );
+    int pcre_exec(PCRE pcre, voidptr extra, byteptr subject, uint subjectSize,
+                int startOffset,
+                int options,
+                array[int] outputVec,
+                uint outputVecSize
+                );
+    void pcre_fullinfo(PCRE pcre, voidptr extra, int param, array[int] result);
+    int pcre_get_stringnumber(PCRE pcre, byteptr name);
+    */
+}

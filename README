@@ -1,2 +1,4 @@
 A driver for MongoDB (http://mongodb.org) for the Crack programming language
 (http://crack-lang.org)
+
+It requires Crack 0.6.1+ and Mongo C driver 0.4+
