@@ -5,22 +5,156 @@
     @filename 'mongo-c-bindings.cpp'
     @inject '#include "mongo.h"\n'
     @crack_internal
-/*
-    # use "int" as the actual type for PCRE because pcre.h defines those as 
-    # opaque.  Ideally, we would mark this as "final"
-    @cname int class PCRE;
-    PCRE pcre_compile2(byteptr pattern, int options, array[int] errorCode,
-                       array[byteptr] errorText,
-                       array[int] errorOffset,
-                       byteptr tablePtr
-                       );
-    int pcre_exec(PCRE pcre, voidptr extra, byteptr subject, uint subjectSize,
-                int startOffset,
-                int options,
-                array[int] outputVec,
-                uint outputVecSize
-                );
-    void pcre_fullinfo(PCRE pcre, voidptr extra, int param, array[int] result);
-    int pcre_get_stringnumber(PCRE pcre, byteptr name);
-    */
+
+    // mongo_error_t
+    const uint32
+        MONGO_CONN_SUCCESS,
+        MONGO_CONN_NO_SOCKET,
+        MONGO_CONN_FAIL,
+        MONGO_CONN_ADDR_FAIL,
+        MONGO_CONN_NOT_MASTER,
+        MONGO_CONN_BAD_SET_NAME,
+        MONGO_CONN_NO_PRIMARY,
+        MONGO_IO_ERROR,
+        MONGO_READ_SIZE_ERROR,
+        MONGO_COMMAND_FAILED,
+        MONGO_BSON_INVALID,
+        MONGO_BSON_NOT_FINISHED;
+
+    class mongo;
+    class mongo_host_port;
+    class mongo_cursor;
+
+    class bson;
+
+    //int mongo_connect( mongo *conn , const char *host, int port );
+    int mongo_connect( mongo conn , byteptr host, int port );
+
+    //void mongo_replset_init( mongo *conn, const char *name );
+    void mongo_replset_init( mongo conn, byteptr name );
+
+    //void mongo_replset_add_seed( mongo *conn, const char *host, int port );
+    void mongo_replset_add_seed( mongo conn, byteptr host, int port );
+
+    //void mongo_parse_host( const char *host_string, mongo_host_port *host_port );
+    void mongo_parse_host( byteptr host_string, mongo_host_port host_port );
+
+    //int mongo_replset_connect( mongo *conn );
+    int mongo_replset_connect( mongo conn );
+
+    //int mongo_set_op_timeout( mongo *conn, int millis );
+    int mongo_set_op_timeout( mongo conn, int millis );
+
+    //int mongo_check_connection( mongo *conn );
+    int mongo_check_connection( mongo conn );
+
+    //int mongo_reconnect( mongo *conn );
+    int mongo_reconnect( mongo conn );
+
+    //void mongo_disconnect( mongo *conn );
+    void mongo_disconnect( mongo conn );
+
+    //void mongo_destroy( mongo *conn );
+    void mongo_destroy( mongo conn );
+
+    //int mongo_insert( mongo *conn, const char *ns, bson *data );
+    int mongo_insert( mongo conn, byteptr ns, bson data );
+
+    //int mongo_insert_batch( mongo *conn , const char *ns ,
+    //                        bson **data , int num );
+    int mongo_insert_batch( mongo conn , byteptr ns ,
+                            array[bson] data , int num );
+
+
+    //int mongo_update( mongo *conn, const char *ns, const bson *cond,
+    //                  const bson *op, int flags );
+    int mongo_update( mongo conn, byteptr ns, bson cond,
+                      bson op, int flags );
+
+    //int mongo_remove( mongo *conn, const char *ns, const bson *cond );
+    int mongo_remove( mongo conn, byteptr ns, bson cond );
+
+    //mongo_cursor *mongo_find( mongo *conn, const char *ns, bson *query,
+    //                          bson *fields, int limit, int skip, int options );
+    mongo_cursor mongo_find( mongo conn, byteptr ns, bson query,
+                             bson fields, int limit, int skip, int options );
+
+    //void mongo_cursor_init( mongo_cursor *cursor, mongo *conn, const char *ns );
+    void mongo_cursor_init( mongo_cursor cursor, mongo conn, byteptr ns );
+
+    //void mongo_cursor_set_query( mongo_cursor *cursor, bson *query );
+    void mongo_cursor_set_query( mongo_cursor cursor, bson query );
+
+    //void mongo_cursor_set_fields( mongo_cursor *cursor, bson *fields );
+    void mongo_cursor_set_fields( mongo_cursor cursor, bson fields );
+
+    //void mongo_cursor_set_skip( mongo_cursor *cursor, int skip );
+    void mongo_cursor_set_skip( mongo_cursor cursor, int skip );
+
+    //void mongo_cursor_set_limit( mongo_cursor *cursor, int limit );
+    void mongo_cursor_set_limit( mongo_cursor cursor, int limit );
+
+    //void mongo_cursor_set_options( mongo_cursor *cursor, int options );
+    void mongo_cursor_set_options( mongo_cursor cursor, int options );
+
+    //const char *mongo_cursor_data( mongo_cursor *cursor );
+    byteptr mongo_cursor_data( mongo_cursor cursor );
+
+    //const bson *mongo_cursor_bson( mongo_cursor *cursor );
+    bson mongo_cursor_bson( mongo_cursor cursor );
+
+    //int mongo_cursor_next( mongo_cursor *cursor );
+    int mongo_cursor_next( mongo_cursor cursor );
+
+    //int mongo_cursor_destroy( mongo_cursor *cursor );
+    int mongo_cursor_destroy( mongo_cursor cursor );
+
+    //bson_bool_t mongo_find_one( mongo *conn, const char *ns, bson *query,
+    //                            bson *fields, bson *out );
+    bool mongo_find_one( mongo conn, byteptr ns, bson query,
+                         bson fields, bson out );
+
+    //int64_t mongo_count( mongo *conn, const char *db, const char *coll,
+    //                     bson *query );
+    int64 mongo_count( mongo conn, byteptr db, byteptr coll,
+                       bson query );
+
+    //bson_bool_t mongo_create_simple_index( mongo *conn, const char *ns, const char *field, int options, bson *out );
+    bool mongo_create_simple_index( mongo conn, byteptr ns, byteptr field, int options, bson out );
+
+    //bson_bool_t mongo_run_command( mongo *conn, const char *db, bson *command, bson *out );
+    bool mongo_run_command( mongo conn, byteptr db, bson command, bson out );
+
+    //int mongo_simple_int_command( mongo *conn, const char *db,
+    //                              const char *cmd, int arg, bson *out );
+    int mongo_simple_int_command( mongo conn, byteptr db,
+                                  byteptr cmd, int arg, bson out );
+
+    //bson_bool_t mongo_simple_str_command( mongo *conn, const char *db, const char *cmd, const char *arg, bson *out );
+    bool mongo_simple_str_command( mongo conn, byteptr db, byteptr cmd, byteptr arg, bson out );
+
+    //int mongo_cmd_drop_db( mongo *conn, const char *db );
+    int mongo_cmd_drop_db( mongo conn, byteptr db );
+
+    //bson_bool_t mongo_cmd_drop_collection( mongo *conn, const char *db, const char *collection, bson *out );
+    bool mongo_cmd_drop_collection( mongo conn, byteptr db, byteptr collection, bson out );
+
+    //int mongo_cmd_add_user( mongo *conn, const char *db, const char *user, const char *pass );
+    int mongo_cmd_add_user( mongo conn, byteptr db, byteptr user, byteptr pass );
+
+    //int mongo_cmd_authenticate( mongo *conn, const char *db, const char *user, const char *pass );
+    int mongo_cmd_authenticate( mongo conn, byteptr db, byteptr user, byteptr pass );
+
+    //bson_bool_t mongo_cmd_ismaster( mongo *conn, bson *out );
+    bool mongo_cmd_ismaster( mongo conn, bson out );
+
+    //int mongo_cmd_get_last_error( mongo *conn, const char *db, bson *out );
+    int mongo_cmd_get_last_error( mongo conn, byteptr db, bson out );
+
+    //int mongo_cmd_get_prev_error( mongo *conn, const char *db, bson *out );
+    int mongo_cmd_get_prev_error( mongo conn, byteptr db, bson out );
+
+    //void mongo_cmd_reset_error( mongo *conn, const char *db );
+    void mongo_cmd_reset_error( mongo conn, byteptr db );
+
 }
