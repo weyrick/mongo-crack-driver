@@ -23,7 +23,8 @@ ADD_CUSTOM_COMMAND(
 SET_SOURCE_FILES_PROPERTIES(${BINDING_EXT_SRC} GENERATED)
 
 # XXX find mongoc
-SET(MONGO_INCLUDE_DIR "/home/weyrick/src/mongo-c-driver/src/")
+SET(MONGO_INCLUDE_DIR "/home/weyrick/workspace/mongo-c-driver/src/")
+SET(MONGO_LIB_DIR "/home/weyrick/workspace/mongo-c-driver/")
 ADD_DEFINITIONS("-DMONGO_HAVE_STDINT")
 
 include_directories(${PROJECT_SOURCE_DIR}/bindings
@@ -32,10 +33,11 @@ include_directories(${PROJECT_SOURCE_DIR}/bindings
 		)
 
 add_library(mongo-ext SHARED ${BINDING_EXT_SRC})
+target_link_libraries(mongo-ext mongoc)
 set_target_properties(mongo-ext
                       PROPERTIES
                       OUTPUT_NAME _mongoc
-                      #LINK_FLAGS ""
+                      LINK_FLAGS "-L${MONGO_LIB_DIR}"
                       PREFIX ""
                       COMPILE_DEFINITIONS_DEBUG _DEBUG
                       )

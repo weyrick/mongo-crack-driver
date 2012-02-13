@@ -157,4 +157,271 @@
     //void mongo_cmd_reset_error( mongo *conn, const char *db );
     void mongo_cmd_reset_error( mongo conn, byteptr db );
 
+    // bson.h
+    const uint32
+        BSON_SIZE_OVERFLOW,
+        BSON_VALID,
+        BSON_NOT_UTF8,
+        BSON_FIELD_HAS_DOT,
+        BSON_FIELD_INIT_DOLLAR,
+        BSON_ALREADY_FINISHED,
+        BSON_BIN_BINARY,
+        BSON_BIN_FUNC,
+        BSON_BIN_BINARY_OLD,
+        BSON_BIN_UUID,
+        BSON_BIN_MD5,
+        BSON_BIN_USER,
+        BSON_EOO,
+        BSON_DOUBLE,
+        BSON_STRING,
+        BSON_OBJECT,
+        BSON_ARRAY,
+        BSON_BINDATA,
+        BSON_UNDEFINED,
+        BSON_OID,
+        BSON_BOOL,
+        BSON_DATE,
+        BSON_NULL,
+        BSON_REGEX,
+        BSON_DBREF,
+        BSON_CODE,
+        BSON_SYMBOL,
+        BSON_CODEWSCOPE,
+        BSON_INT,
+        BSON_TIMESTAMP,
+        BSON_LONG;
+
+    class bson_oid_t;
+    class bson_iterator;
+
+    //int bson_size( const bson *b );
+    int bson_size( bson b );
+
+    //void bson_print( bson *b );
+    void bson_print( bson b );
+
+    //const char *bson_data( bson *b );
+    byteptr bson_data( bson b );
+
+    //void bson_print_raw( const char *bson , int depth );
+    void bson_print_raw( byteptr bson , int depth );
+
+    //bson_type bson_find( bson_iterator *it, const bson *obj, const char *name );
+    int bson_find( bson_iterator it, bson obj, byteptr name );
+
+    //void bson_iterator_init( bson_iterator *i , const bson *b );
+    void bson_iterator_init( bson_iterator i , bson b );
+
+    //void bson_iterator_from_buffer( bson_iterator *i, const char *buffer );
+    void bson_iterator_from_buffer( bson_iterator i, byteptr buffer );
+
+    //bson_bool_t bson_iterator_more( const bson_iterator *i );
+    bool bson_iterator_more( bson_iterator i );
+
+    //bson_type bson_iterator_next( bson_iterator *i );
+    int bson_iterator_next( bson_iterator i );
+
+    //bson_type bson_iterator_type( const bson_iterator *i );
+    int bson_iterator_type( bson_iterator i );
+
+    //const char *bson_iterator_key( const bson_iterator *i );
+    byteptr bson_iterator_key( bson_iterator i );
+
+    //const char *bson_iterator_value( const bson_iterator *i );
+    byteptr bson_iterator_value( bson_iterator i );
+
+    //double bson_iterator_double( const bson_iterator *i );
+    float64 bson_iterator_double( bson_iterator i );
+
+    //int bson_iterator_int( const bson_iterator *i );
+    int bson_iterator_int( bson_iterator i );
+
+    //int64_t bson_iterator_long( const bson_iterator *i );
+    int64 bson_iterator_long( bson_iterator i );
+
+    //bson_timestamp_t bson_iterator_timestamp( const bson_iterator *i );
+    //bson_timestamp_t bson_iterator_timestamp( const bson_iterator *i );
+
+    //bson_bool_t bson_iterator_bool( const bson_iterator *i );
+    bool bson_iterator_bool( bson_iterator i );
+
+    //double bson_iterator_double_raw( const bson_iterator *i );
+    float64 bson_iterator_double_raw( bson_iterator i );
+
+/*
+    int bson_iterator_int_raw( const bson_iterator *i );
+
+    int64_t bson_iterator_long_raw( const bson_iterator *i );
+
+    bson_bool_t bson_iterator_bool_raw( const bson_iterator *i );
+
+    bson_oid_t *bson_iterator_oid( const bson_iterator *i );
+
+    const char *bson_iterator_string( const bson_iterator *i );
+
+    int bson_iterator_string_len( const bson_iterator *i );
+
+    const char *bson_iterator_code( const bson_iterator *i );
+
+    void bson_iterator_code_scope( const bson_iterator *i, bson *scope );
+
+    bson_date_t bson_iterator_date( const bson_iterator *i );
+
+    time_t bson_iterator_time_t( const bson_iterator *i );
+
+    int bson_iterator_bin_len( const bson_iterator *i );
+
+    char bson_iterator_bin_type( const bson_iterator *i );
+
+    const char *bson_iterator_bin_data( const bson_iterator *i );
+
+    const char *bson_iterator_regex( const bson_iterator *i );
+
+    const char *bson_iterator_regex_opts( const bson_iterator *i );
+
+    void bson_iterator_subobject( const bson_iterator *i, bson *sub );
+
+    void bson_iterator_subiterator( const bson_iterator *i, bson_iterator *sub );
+
+    //void bson_oid_from_string( bson_oid_t *oid, const char *str );
+    void bson_oid_from_string( bson_oid_t oid, byteptr str );
+
+    //void bson_oid_to_string( const bson_oid_t *oid, char *str );
+    void bson_oid_to_string( bson_oid_t oid, byteptr str );
+
+    //void bson_oid_gen( bson_oid_t *oid );
+    void bson_oid_gen( bson_oid_t oid );
+
+    //void bson_set_oid_fuzz( int ( *func )( void ) );
+
+    //void bson_set_oid_inc( int ( *func )( void ) );
+
+    //time_t bson_oid_generated_time( bson_oid_t *oid );
+
+    //void bson_init( bson *b );
+    void bson_init( bson b );
+
+    //int bson_init_data( bson *b , char *data );
+    int bson_init_data( bson b , byteptr data );
+
+    //int bson_init_finished_data( bson *b, char *data );
+    int bson_init_finished_data( bson b, byteptr data );
+
+    //void bson_init_size( bson *b, int size );
+    void bson_init_size( bson b, int size );
+
+    //int bson_ensure_space( bson *b, const int bytesNeeded );
+    int bson_ensure_space( bson b, int bytesNeeded );
+
+    //int bson_finish( bson *b );
+    int bson_finish( bson b );
+
+    //void bson_destroy( bson *b );
+    void bson_destroy( bson b );
+
+    //bson *bson_empty( bson *obj );
+    bson bson_empty( bson obj );
+
+    //int bson_copy( bson *out, const bson *in );
+    int bson_copy( bson outo, bson ino );
+
+    //int bson_append_oid( bson *b, const char *name, const bson_oid_t *oid );
+    int bson_append_oid( bson b, byteptr name, bson_oid_t oid );
+
+    //int bson_append_new_oid( bson *b, const char *name );
+    int bson_append_new_oid( bson b, byteptr name );
+
+    //int bson_append_int( bson *b, const char *name, const int i );
+    int bson_append_int( bson b, byteptr name, int i );
+
+    //int bson_append_long( bson *b, const char *name, const int64_t i );
+    int bson_append_long( bson b, byteptr name, int64 i );
+
+    //int bson_append_double( bson *b, const char *name, const double d );
+    int bson_append_double( bson b, byteptr name, float64 d );
+
+    //int bson_append_string( bson *b, const char *name, const char *str );
+    //int bson_append_string( bson b, byteptr name, byteptr str );
+
+    //int bson_append_string_n( bson *b, const char *name, const char *str, int len );
+    int bson_append_string_n( bson b, byteptr name, byteptr str, int len );
+
+    //int bson_append_symbol( bson *b, const char *name, const char *str );
+    //int bson_append_symbol( bson b, byteptr name, byteptr str );
+
+    //int bson_append_symbol_n( bson *b, const char *name, const char *str, int len );
+    int bson_append_symbol_n( bson b, byteptr name, byteptr str, int len );
+
+    //int bson_append_code( bson *b, const char *name, const char *str );
+
+    //int bson_append_code_n( bson *b, const char *name, const char *str, int len );
+    int bson_append_code_n( bson b, byteptr name, byteptr str, int len );
+
+    //int bson_append_code_w_scope( bson *b, const char *name, const char *code, const bson *scope );
+
+    //int bson_append_code_w_scope_n( bson *b, const char *name, const char *code, int size, const bson *scope );
+    int bson_append_code_w_scope_n( bson b, byteptr name, byteptr code, int size, bson scope );
+
+    //int bson_append_binary( bson *b, const char *name, char type, const char *str, int len );
+    int bson_append_binary( bson b, byteptr name, byte type, byteptr str, int len );
+
+    //int bson_append_bool( bson *b, const char *name, const bson_bool_t v );
+    int bson_append_bool( bson b, byteptr name, bool v );
+
+    //int bson_append_null( bson *b, const char *name );
+    int bson_append_null( bson b, byteptr name );
+
+    //int bson_append_undefined( bson *b, const char *name );
+    int bson_append_undefined( bson b, byteptr name );
+
+    //int bson_append_regex( bson *b, const char *name, const char *pattern, const char *opts );
+    int bson_append_regex( bson b, byteptr name, byteptr pattern, byteptr opts );
+
+    //int bson_append_bson( bson *b, const char *name, const bson *bson );
+    int bson_append_bson( bson b, byteptr name, bson bson );
+
+    //int bson_append_element( bson *b, const char *name_or_null, const bson_iterator *elem );
+    //int bson_append_element( bson b, byteptr name_or_null, bson_iterator elem );
+
+    //int bson_append_timestamp( bson *b, const char *name, bson_timestamp_t *ts );
+    //int bson_append_timestamp( bson b, byteptr name, bson_timestamp_t *ts );
+
+    //int bson_append_date( bson *b, const char *name, bson_date_t millis );
+    int bson_append_date( bson b, byteptr name, int64 millis );
+
+    //int bson_append_time_t( bson *b, const char *name, time_t secs );
+    //int bson_append_time_t( bson *b, const char *name, time_t secs );
+
+    //int bson_append_start_object( bson *b, const char *name );
+    int bson_append_start_object( bson b, byteptr name );
+
+    //int bson_append_start_array( bson *b, const char *name );
+    int bson_append_start_array( bson b, byteptr name );
+
+    //int bson_append_finish_object( bson *b );
+    int bson_append_finish_object( bson b );
+
+    //int bson_append_finish_array( bson *b );
+    int bson_append_finish_array( bson b );
+
+    //void bson_numstr( char *str, int i );
+    void bson_numstr( byteptr str, int i );
+
+    //void bson_incnumstr( char *str );
+    void bson_incnumstr( byteptr str );
+
+/*
+    void *bson_malloc( int size );
+
+    void *bson_realloc( void *ptr, int size );
+
+    bson_err_handler set_bson_err_handler( bson_err_handler func );
+
+    void bson_fatal( int ok );
+
+    void bson_fatal_msg( int ok, const char *msg );
+
+    void bson_builder_error( bson *b );
+*/
+
 }
