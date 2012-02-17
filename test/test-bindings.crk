@@ -1,0 +1,66 @@
+import crack.io cout;
+import crack.lang CString, die, FreeBase, free;
+import _mongoc mongo, mongo_connect, MONGO_OK, mongo_conn_new;
+
+TEST_SERVER := "127.0.0.1";
+TEST_PORT := 27017;
+
+/*
+class MongoWrapper {
+    mongo conn;
+    oper init() {
+        conn = mongo_conn_new();
+    }
+}
+*/
+
+class Mongo {
+    mongo conn = null;
+    oper init(mongo conn0): conn = conn0 { }
+    oper init() {
+        conn = mongo_conn_new();
+    }
+
+    int connect(byteptr host, int port) { return mongo_connect(conn, host, port); }
+    /*
+    void replset_init(byteptr name) { mongo_replset_init(conn, name); }
+    void replset_add_seed(byteptr host, int port) { mongo_replset_add_seed(conn, host, port); }
+    int replset_connect() { return mongo_replset_connect(conn); }
+    int set_op_timeout(int millis) { return mongo_set_op_timeout(conn, millis); }
+    int check_connection() { return mongo_check_connection(conn); }
+    int reconnect() { return mongo_reconnect(conn); }
+    void disconnect() { mongo_disconnect(conn); }
+    void destroy() { mongo_destroy(conn); }
+    int insert(byteptr ns, bson data) { return mongo_insert(conn, ns, data); }
+
+    int insert_batch(byteptr ns, array[bson] data, int num) { return mongo_insert_batch(conn, ns, data, num); }
+    int update(byteptr ns, bson cond, bson op, int flags) { return mongo_update(conn, ns, cond, op, flags); }
+    int remove(byteptr ns, bson cond) { return mongo_remove(conn, ns, cond); }
+    mongo_cursor find(byteptr ns, bson query, bson fields, int limit, int skip, int options) { return mongo_find(conn, ns, query, fields, limit, skip, options); }
+    bool find_one(byteptr ns, bson query, bson fields, bson out) { return mongo_find_one(conn, ns, query, fields, out); }
+    int64 count(byteptr db, byteptr coll, bson query) { return mongo_count(conn, db, coll, query); }
+    bool create_simple_index(byteptr ns, byteptr field, int options, bson out) { return mongo_create_simple_index(conn, ns, field, options, out); }
+    bool run_command(byteptr db, bson command, bson out) { return mongo_run_command(conn, db, command, out); }
+    int simple_int_command(byteptr db, byteptr cmd, int arg, bson out) { return mongo_simple_int_command(conn, db, cmd, arg, out); }
+    bool simple_str_command(byteptr db, byteptr cmd, byteptr arg, bson out) { return mongo_simple_str_command(conn, db, cmd, arg, out); }
+
+    int cmd_drop_db(byteptr db) { return mongo_cmd_drop_db(conn, db); }
+    bool cmd_drop_collection(byteptr db, byteptr collection, bson out) { return mongo_cmd_drop_collection(conn, db, collection, out); }
+    int cmd_add_user(byteptr db, byteptr user, byteptr pass) { return mongo_cmd_add_user(conn, db, user, pass); }
+    int cmd_authenticate(byteptr db, byteptr user, byteptr pass) { return mongo_cmd_authenticate(conn, db, user, pass); }
+    bool cmd_ismaster(bson out) { return mongo_cmd_ismaster(conn, out); }
+    int cmd_get_last_error(byteptr db, bson out) { return mongo_cmd_get_last_error(conn, db, out); }
+    int cmd_get_prev_error(byteptr db, bson out) { return mongo_cmd_get_prev_error(conn, db, out); }
+    void cmd_reset_error(byteptr db) { mongo_cmd_reset_error(conn, db); }*/
+} // Mongo
+
+//m := MongoWrapper();
+m := Mongo();
+cout `will connect\n`;
+
+cout `connected: $(m.conn.connected)\n`;
+r :=  mongo_connect( m.conn , TEST_SERVER.buffer, TEST_PORT );
+cout `connect result: $r, connected: $(m.conn.connected)\n`;
+if ( r != MONGO_OK ) {
+    die("failed to connect\n");
+}
