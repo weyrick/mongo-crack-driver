@@ -1,6 +1,6 @@
 import crack.io cout;
 import crack.lang CString, die, FreeBase, free;
-import _mongoc mongo, mongo_connect, MONGO_OK, mongo_conn_new;
+import _mongoc mongo, mongo_connect, mongo_disconnect, MONGO_OK, mongo_conn_new;
 
 TEST_SERVER := "127.0.0.1";
 TEST_PORT := 27017;
@@ -22,6 +22,7 @@ class Mongo {
     }
 
     int connect(byteptr host, int port) { return mongo_connect(conn, host, port); }
+    void disconnect() { mongo_disconnect(conn); }
     /*
     void replset_init(byteptr name) { mongo_replset_init(conn, name); }
     void replset_add_seed(byteptr host, int port) { mongo_replset_add_seed(conn, host, port); }
@@ -29,7 +30,6 @@ class Mongo {
     int set_op_timeout(int millis) { return mongo_set_op_timeout(conn, millis); }
     int check_connection() { return mongo_check_connection(conn); }
     int reconnect() { return mongo_reconnect(conn); }
-    void disconnect() { mongo_disconnect(conn); }
     void destroy() { mongo_destroy(conn); }
     int insert(byteptr ns, bson data) { return mongo_insert(conn, ns, data); }
 
@@ -59,8 +59,10 @@ m := Mongo();
 cout `will connect\n`;
 
 cout `connected: $(m.conn.connected)\n`;
-r :=  mongo_connect( m.conn , TEST_SERVER.buffer, TEST_PORT );
+r :=  m.connect( TEST_SERVER.buffer, TEST_PORT );
 cout `connect result: $r, connected: $(m.conn.connected)\n`;
 if ( r != MONGO_OK ) {
     die("failed to connect\n");
 }
+m.disconnect();
+cout `disconnect: connected: $(m.conn.connected)\n`;
